@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentes IA Personalizados | Tu Asistente Inteligente a Medida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-pink: #ec4899;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4c1d95 50%, #581c87 75%, #701a75 100%);
+            z-index: -2;
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: rgba(168, 85, 247, 0.4);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(59, 130, 246, 0.3);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: rgba(236, 72, 153, 0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 40px 16px;
+            }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .intro-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .intro-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Glass card mixin */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+        }
+
+        /* Benefits section */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 640px) {
+            .benefits {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        .benefit-card {
+            padding: 22px 18px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .benefit-icon {
+            font-size: 1.75rem;
+            margin-bottom: 10px;
+        }
+
+        .benefit-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .benefit-desc {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Form section */
+        .form-section {
+            padding: 36px 32px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 640px) {
+            .form-section {
+                padding: 28px 20px;
+                border-radius: 16px;
+            }
+        }
+
+        .form-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #c084fc;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin: 32px 0 20px 0;
+            padding: 10px 16px;
+            background: rgba(168, 85, 247, 0.15);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .label-hint {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        select:hover,
+        textarea:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgba(255,255,255,0.5)' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        select option {
+            background: #312e81;
+            color: var(--text-primary);
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(168, 85, 247, 0.5) transparent;
+        }
+
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.5);
+            border-radius: 3px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 28px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Required asterisk */
+        .required {
+            color: var(--accent-pink);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .testimonial {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .testimonial strong {
+            color: var(--text-primary);
+            font-style: normal;
+        }
+
+        .footer-contact {
+            font-size: 0.8125rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-contact a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-contact a:hover {
+            color: var(--accent-purple);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">Todos van a tener uno. Vos también deberías ✦</h1>
+            <p class="intro-text">
+                La IA no es el futuro, es el presente. Empresas y profesionales ya están usando agentes para trabajar menos y lograr más. <strong>La pregunta no es si vas a usarlo, es cuándo.</strong>
+            </p>
+        </header>
+
+        <div class="benefits">
+            <div class="benefit-card glass">
+                <div class="benefit-icon">✨</div>
+                <h3 class="benefit-title">Personalizado</h3>
+                <p class="benefit-desc">Hecho para vos</p>
+            </div>
+            <div class="benefit-card glass">
+                <div class="benefit-icon">⚡</div>
+                <h3 class="benefit-title">Productivo</h3>
+                <p class="benefit-desc">Ahorrá horas</p>
+            </div>
+            <div class="benefit-card glass">
+                <div class="benefit-icon">🔄</div>
+                <h3 class="benefit-title">Siempre activo</h3>
+                <p class="benefit-desc">24/7 disponible</p>
+            </div>
+        </div>
+
+        <div class="form-section glass">
+            <h2 class="form-title">Contame qué necesitás</h2>
+            <p class="form-subtitle">Completá el formulario y te contacto en menos de 24hs</p>
+
+            <form action="https://formspree.io/f/mnnebojg" method="POST">
+                <input type="hidden" name="_next" value="https://alexisibarra55.github.io/agentes-ia/gracias.html">
+                
+                <div class="section-header">Sobre vos</div>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre completo <span class="required">*</span></label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email de contacto <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="empresa">Empresa o proyecto</label>
+                    <input type="text" id="empresa" name="empresa" placeholder="Opcional">
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion_empresa">¿A qué te dedicás? <span class="required">*</span></label>
+                    <textarea id="descripcion_empresa" name="descripcion_empresa" placeholder="Contame brevemente sobre tu trabajo o negocio..." required></textarea>
+                </div>
+
+                <div class="section-header">Tu asistente ideal</div>
+
+                <div class="form-group">
+                    <label for="rol">¿Qué rol querés que cumpla? <span class="required">*</span>
+                        <span class="label-hint">(Asistente, experto, coach...)</span>
+                    </label>
+                    <input type="text" id="rol" name="rol" placeholder="Ej: Asistente de planificación" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="objetivo">¿Qué problema te resuelve? <span class="required">*</span></label>
+                    <textarea id="objetivo" name="objetivo" placeholder="¿Qué querés lograr con este asistente?" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tareas_obligatorias">Tareas que debería hacer <span class="required">*</span>
+                        <span class="label-hint">(Las 3-5 más importantes)</span>
+                    </label>
+                    <textarea id="tareas_obligatorias" name="tareas_obligatorias" placeholder="Ej:&#10;1. Ayudarme con la planificación mensual&#10;2. Sugerir ideas para redes sociales&#10;3. Crear planillas de seguimiento" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="restricciones">¿Algo que NO debería hacer?
+                        <span class="label-hint">(Opcional)</span>
+                    </label>
+                    <textarea id="restricciones" name="restricciones" placeholder="Límites o preferencias..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="personalidad">¿Cómo querés que se comunique? <span class="required">*</span></label>
+                    <select id="personalidad" name="personalidad" required>
+                        <option value="">Seleccioná un estilo</option>
+                        <option value="formal-tecnico">Formal y técnico</option>
+                        <option value="formal-amigable">Formal pero amigable</option>
+                        <option value="informal-profesional">Informal pero profesional</option>
+                        <option value="casual-cercano">Casual y cercano</option>
+                    </select>
+                </div>
+
+                <div class="section-header">Detalles finales</div>
+
+                <div class="form-group">
+                    <label for="info_especifica">¿Necesita conocer info específica tuya?</label>
+                    <select id="info_especifica" name="info_especifica">
+                        <option value="">Seleccioná una opción</option>
+                        <option value="si">Sí, tengo info para compartir</option>
+                        <option value="si-armar">Sí, pero hay que definirla juntos</option>
+                        <option value="no">No, conocimiento general alcanza</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="urgencia">¿Para cuándo lo necesitás? <span class="required">*</span></label>
+                    <select id="urgencia" name="urgencia" required>
+                        <option value="">Seleccioná una opción</option>
+                        <option value="asap">Lo antes posible</option>
+                        <option value="1-2-semanas">1-2 semanas</option>
+                        <option value="1-mes">~1 mes</option>
+                        <option value="sin-urgencia">Sin urgencia, estoy explorando</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comentarios">¿Algo más que quieras contarme?</label>
+                    <textarea id="comentarios" name="comentarios" placeholder="Cualquier detalle adicional..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar solicitud →</button>
+            </form>
+        </div>
+
+        <footer>
+            <p class="testimonial">
+                "Uso agentes IA en mi trabajo y vida diaria. <strong>Me cambiaron la forma de trabajar.</strong> Vos también deberías probarlo."
+            </p>
+            <p class="footer-contact">
+                ¿Dudas? Escribime a <a href="/cdn-cgi/l/email-protection#7b1a171e03035512191a09091a3b1c161a121755181416"><span class="__cf_email__" data-cfemail="630
