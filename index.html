@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentes IA Personalizados | Tu Asistente Inteligente a Medida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff2a6d;
+            --neon-cyan: #05d9e8;
+            --neon-purple: #d300c5;
+            --dark-bg: #0d0221;
+            --darker-bg: #05010d;
+            --grid-color: rgba(5, 217, 232, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #b8c5d6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(211, 0, 197, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 42, 109, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(5, 217, 232, 0.05) 0%, transparent 70%),
+                linear-gradient(180deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            z-index: -2;
+        }
+
+        /* Retro grid floor */
+        .grid-floor {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40vh;
+            background: 
+                linear-gradient(transparent 0%, var(--darker-bg) 100%),
+                repeating-linear-gradient(
+                    90deg,
+                    var(--grid-color) 0px,
+                    var(--grid-color) 1px,
+                    transparent 1px,
+                    transparent 80px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    var(--grid-color) 0px,
+                    var(--grid-color) 1px,
+                    transparent 1px,
+                    transparent 80px
+                );
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: bottom;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 0 80px, 0 80px; }
+        }
+
+        /* Scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(5, 217, 232, 0.5);
+            position: relative;
+        }
+
+        .logo::after {
+            content: 'AGENTES IA';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: blur(20px);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        .tagline {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* Benefits section */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(13, 2, 33, 0.9), rgba(5, 1, 13, 0.9));
+            border: 1px solid rgba(5, 217, 232, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .benefit-card:hover::before {
+            left: 100%;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(5, 217, 232, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .benefit-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Form section */
+        .form-section {
+            background: linear-gradient(135deg, rgba(13, 2, 33, 0.95), rgba(5, 1, 13, 0.95));
+            border: 1px solid rgba(255, 42, 109, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan));
+            border-radius: 14px;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(10px);
+        }
+
+        .form-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--neon-pink);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin: 35px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 42, 109, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .label-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 18px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            background: rgba(5, 1, 13, 0.8);
+            border: 1px solid rgba(5, 217, 232, 0.3);
+            border-radius: 6px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(5, 217, 232, 0.2);
+            background: rgba(5, 1, 13, 0.95);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(184, 197, 214, 0.4);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2305d9e8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        select option {
+            background: var(--darker-bg);
+            color: var(--text-primary);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px 40px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--darker-bg);
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(5, 217, 232, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+
+        footer a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--neon-pink);
+        }
+
+        /* Required asterisk */
+        .required {
+            color: var(--neon-pink);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .form-section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="grid-floor"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">Agentes IA</h1>
+            <p class="tagline">Tu Asistente Inteligente a Medida</p>
+        </header>
+
+        <div class="benefits">
+            <div class="benefit-card">
+                <div class="benefit-icon">🤖</div>
+                <h3 class="benefit-title">Personalizado</h3>
+                <p class="benefit-desc">Un agente diseñado específicamente para tu negocio y necesidades únicas</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">⚡</div>
+                <h3 class="benefit-title">Productividad</h3>
+                <p class="benefit-desc">Ahorrá horas de trabajo delegando tareas a tu asistente IA</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🚀</div>
+                <h3 class="benefit-title">Siempre disponible</h3>
+                <p class="benefit-desc">Tu agente trabaja 24/7 sin descanso y sin errores</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="form-title">Contame sobre tu proyecto</h2>
+            <p class="form-subtitle">Completá el formulario y me pongo en contacto en menos de 24hs</p>
+
+            <!-- IMPORTANTE: Reemplazá YOUR_FORMSPREE_ID con tu ID de Formspree -->
+            <form action="https://formspree.io/f/mnnebojg" method="POST">
+                
+                <div class="section-header">Sobre vos</div>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre completo <span class="required">*</span></label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email de contacto <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="empresa">Nombre de la empresa/proyecto</label>
+                    <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa o proyecto (opcional)">
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion_empresa">¿A qué te dedicás? <span class="required">*</span>
+                        <span class="label-hint">(Breve descripción de tu trabajo o negocio)</span>
+                    </label>
+                    <textarea id="descripcion_empresa" name="descripcion_empresa" placeholder="Ej: Soy contador independiente, tengo una tienda online, trabajo en marketing..." required></textarea>
+                </div>
+
+                <div class="section-header">El agente que necesitás</div>
+
+                <div class="form-group">
+                    <label for="rol">¿Qué rol querés que cumpla el agente? <span class="required">*</span>
+                        <span class="label-hint">(Ej: Asistente personal, experto en mi área, coach, etc.)</span>
+                    </label>
+                    <input type="text" id="rol" name="rol" placeholder="Ej: Asistente de planificación, experto en marketing..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="objetivo">¿Qué querés lograr con este agente? <span class="required">*</span>
+                        <span class="label-hint">(¿Qué problema te resuelve?)</span>
+                    </label>
+                    <textarea id="objetivo" name="objetivo" placeholder="Ej: Necesito ayuda para organizar mis tareas semanales, generar ideas de contenido, tener un experto que me asesore..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tareas_obligatorias">¿Qué tareas específicas te gustaría que haga? <span class="required">*</span>
+                        <span class="label-hint">(Listá las 3-5 más importantes)</span>
+                    </label>
+                    <textarea id="tareas_obligatorias" name="tareas_obligatorias" placeholder="Ej:&#10;1. Ayudarme con la planificación mensual&#10;2. Sugerir ideas para redes sociales&#10;3. Crear planillas de seguimiento&#10;..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="restricciones">¿Hay algo que NO debería hacer el agente?
+                        <span class="label-hint">(Opcional - límites o temas que preferís evitar)</span>
+                    </label>
+                    <textarea id="restricciones" name="restricciones" placeholder="Ej: Prefiero que no use un tono muy formal, que no me dé respuestas muy largas..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="personalidad">¿Cómo querés que sea la personalidad del agente? <span class="required">*</span></label>
+                    <select id="personalidad" name="personalidad" required>
+                        <option value="">Seleccioná una opción</option>
+                        <option value="formal-tecnico">Formal y técnico</option>
+                        <option value="formal-amigable">Formal pero amigable</option>
+                        <option value="informal-profesional">Informal pero profesional</option>
+                        <option value="casual-cercano">Casual y cercano</option>
+                    </select>
+                </div>
+
+                <div class="section-header">Contexto</div>
+
+                <div class="form-group">
+                    <label for="info_especifica">¿El agente necesita conocer información específica tuya o de tu negocio?
+                        <span class="label-hint">(Productos, servicios, metodologías, etc.)</span>
+                    </label>
+                    <select id="info_especifica" name="info_especifica">
+                        <option value="">Seleccioná una opción</option>
+                        <option value="si">Sí, tengo info para compartir</option>
+                        <option value="si-armar">Sí, pero hay que definirla juntos</option>
+                        <option value="no">No, con conocimiento general alcanza</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="urgencia">¿Para cuándo lo necesitás? <span class="required">*</span></label>
+                    <select id="urgencia" name="urgencia" required>
+                        <option value="">Seleccioná una opción</option>
+                        <option value="asap">Lo antes posible</option>
+                        <option value="1-2-semanas">1-2 semanas</option>
+                        <option value="1-mes">Aproximadamente 1 mes</option>
+                        <option value="sin-urgencia">Sin urgencia, estoy explorando</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comentarios">¿Algo más que quieras contarme?</label>
+                    <textarea id="comentarios" name="comentarios" placeholder="Cualquier detalle adicional..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar solicitud →</button>
+            </form>
+        </div>
+
+        <footer>
+            <p>¿Preguntas? Contactame directamente en <a href="/cdn-cgi/l/email-protection#a6d2d3e6c3cbc7cfca88c5c9cb"><span class="__cf_email__" data-cfemail="c2b6b782a7afa3abaeeca1adaf">[email&#160;protected]</span></a></p>
+            <p style="marg
